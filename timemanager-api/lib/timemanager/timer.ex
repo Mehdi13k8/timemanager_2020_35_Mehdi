@@ -136,7 +136,10 @@ defmodule Timemanager.Timer do
 
   def get_all_working_time_by_userId!(id, userId), do: Repo.get!(WorkingTime, [id: id, user: userId])
 
-  def get_working_time_by_userid!(userId, startDate, endDate), do: Repo.get_by!(WorkingTime, [user: userId, startDate: startDate, endDate: endDate])
+  def get_working_time_by_user!(params) do
+    query = from(WorkingTime, where: [user_id: ^params["userID"], start: ^params["start"], end: ^params["end"]])
+    Repo.all(query)
+  end
 
   @doc """
   Creates a working_time.
@@ -150,9 +153,10 @@ defmodule Timemanager.Timer do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_working_time(attrs \\ %{}) do
+  def create_working_time(attrs, user_id \\ %{}) do
+    body = %{"start" => attrs["start"], "end" => attrs["end"], "user" => user_id}
     %WorkingTime{}
-    |> WorkingTime.changeset(attrs)
+    |> WorkingTime.changeset(body)
     |> Repo.insert()
   end
 

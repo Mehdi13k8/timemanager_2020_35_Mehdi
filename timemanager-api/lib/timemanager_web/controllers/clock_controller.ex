@@ -21,7 +21,7 @@ defmodule TimemanagerWeb.ClockController do
     end
   end
 
-  def show(conn, %{"userId" => userId}) do
+  def show(conn, %{"userID" => userID}) do
     clock = Timer.get_clock!(userID)
     render(conn, "show.json", clock: clock)
   end

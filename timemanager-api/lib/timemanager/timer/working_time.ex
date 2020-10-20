@@ -15,8 +15,8 @@ defmodule Timemanager.Timer.WorkingTime do
   @doc false
   def changeset(working_time, attrs) do
     working_time
-    |> cast(attrs, [:start, :end])
-    |> validate_required([:start, :end])
+    |> cast(attrs, [:start, :end, :user])
+    |> validate_required([:start, :end, :user])
     |> cast_assoc(:users)
   end
 end

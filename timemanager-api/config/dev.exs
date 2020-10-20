@@ -5,7 +5,7 @@ database_url = System.get_env("DATABASE_URL")
 # Configure your database
 config :timemanager, Timemanager.Repo,
   username: "postgres",
-  password: "048690",
+  password: "postgres",
   database: "timemanager_dev",
   hostname: System.get_env("HOSTNAME_URL") || "localhost",
 #  url: database_url,
