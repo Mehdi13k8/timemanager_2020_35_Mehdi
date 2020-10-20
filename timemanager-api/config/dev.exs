@@ -7,7 +7,7 @@ config :timemanager, Timemanager.Repo,
   username: "postgres",
   password: "postgres",
   database: "timemanager_dev",
-  hostname: "mypostgres",
+  hostname: System.get_env("HOSTNAME_URL") || "localhost",
 #  url: database_url,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

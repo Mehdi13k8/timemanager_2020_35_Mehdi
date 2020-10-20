@@ -16,6 +16,7 @@ services:
       - MIX_ENV=dev
       - PORT=4000
       - DATABASE_URL=postgres://postgres:postgres@mypostgres:5432/timemanager_dev
+      - HOSTNAME_URL=mypostgres
     volumes:
       - .:/app
     ports:
