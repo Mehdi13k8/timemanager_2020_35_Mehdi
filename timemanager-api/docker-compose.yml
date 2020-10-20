@@ -7,15 +7,15 @@ services:
     command: >
       bash -c "mix deps.get --force && mix phx.gen.json Account User users username:string email:string --force &&
            mix phx.gen.json Timer Clock clocks time:datetime status:boolean user:references:users --force &&
-           mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users --force && echo Y | mix ecto.migrate && mix phx.server"
-
+           mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users --force && mix ecto.create && mix phx.server"
+#&& mix ecto.migrate  Genius I'm
     # command: mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users --force
     # command: mix ecto.migrate --force
     # command: mix phx.server
     environment:
       - MIX_ENV=dev
       - PORT=4000
-      - DATABASE_URL=postgres://postgres:postgres@mypostgres:5432/tm_db
+      - DATABASE_URL=postgres://postgres:postgres@mypostgres:5432/timemanager_dev
     volumes:
       - .:/app
     ports:
