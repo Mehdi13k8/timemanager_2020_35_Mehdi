@@ -4,7 +4,14 @@ services:
   web:
     build: .
     # image: docker.io/codereviewvideos/docker-phoenix
-    command: mix phx.server
+    command: >
+      bash -c "mix deps.get --force && mix phx.gen.json Account User users username:string email:string --force &&
+           mix phx.gen.json Timer Clock clocks time:datetime status:boolean user:references:users --force &&
+           mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users --force && echo Y | mix ecto.migrate && mix phx.server"
+
+    # command: mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users --force
+    # command: mix ecto.migrate --force
+    # command: mix phx.server
     environment:
       - MIX_ENV=dev
       - PORT=4000
