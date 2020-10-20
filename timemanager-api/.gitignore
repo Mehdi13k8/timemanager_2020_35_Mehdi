@@ -1,4 +1,4 @@
-# The directory Mix will write compiled artifacts to.
+A# The directory Mix will write compiled artifacts to.
 /_build/
 
 # If you run "mix test --cover", coverage assets end up here.
@@ -26,3 +26,7 @@ time_manager-*.tar
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
 /priv/static/
+
+# Don't take volume file & mix lock
+/volume/
+mix.lock
