@@ -13,11 +13,17 @@ defmodule TimemanagerWeb.Router do
     post("/users", UserController, :create)
     put("/users/:id", UserController, :update)
     delete("/users/:id", UserController, :delete)
+
+    # Working Times Endpoints
     get("/workingtimes/:userId/:id", WorkingTimeController, :show)
     get("/workingtimes/:userId", WorkingTimeController, :index)
     post("/workingtimes/:userId", WorkingTimeController, :create)
     put("/workingtimes/:id", WorkingTimeController, :update)
     delete("/workingtimes/:id", WorkingTimeController, :delete)
+
+    # Clocks Endpoints
+    get("/clocks/:userID", ClockController, :show)
+    post("/clocks/:userID", ClockController, :create)
   end
 
   # Enables LiveDashboard only for development
