@@ -1,11 +1,14 @@
 use Mix.Config
 
+database_url = System.get_env("DATABASE_URL")
+
 # Configure your database
 config :timemanager, Timemanager.Repo,
   username: "postgres",
   password: "048690",
   database: "timemanager_dev",
-  hostname: "localhost",
+  hostname: System.get_env("HOSTNAME_URL") || "localhost",
+#  url: database_url,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
