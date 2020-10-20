@@ -36,7 +36,7 @@ defmodule Timemanager.Timer do
 
   """
   def get_clock!(id), do: Repo.get!(Clock, id)
-
+  
   @doc """
   Creates a clock.
 
@@ -131,7 +131,12 @@ defmodule Timemanager.Timer do
       ** (Ecto.NoResultsError)
 
   """
-  def get_working_time!(id), do: Repo.get!(WorkingTime, id)
+  
+  def get_working_time!(id), do: Repo.get!(WorkingTime, [id: id])
+
+  def get_all_working_time_by_userId!(id, userId), do: Repo.get!(WorkingTime, [id: id, user: userId])
+
+  def get_working_time_by_userid!(userId, startDate, endDate), do: Repo.get_by!(WorkingTime, [user: userId, startDate: startDate, endDate: endDate])
 
   @doc """
   Creates a working_time.

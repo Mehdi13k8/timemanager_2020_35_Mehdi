@@ -3,7 +3,7 @@ use Mix.Config
 # Configure your database
 config :timemanager, Timemanager.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "048690",
   database: "timemanager_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
@@ -17,7 +17,7 @@ config :timemanager, Timemanager.Repo,
 # with webpack to recompile .js and .css sources.
 config :timemanager, TimemanagerWeb.Endpoint,
   http: [port: 4000],
-  debug_errors: true,
+  debug_errors: false,
   code_reloader: true,
   check_origin: false,
   watchers: []

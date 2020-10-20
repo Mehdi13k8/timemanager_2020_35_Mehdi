@@ -6,12 +6,14 @@ defmodule TimemanagerWeb.WorkingTimeController do
 
   action_fallback TimemanagerWeb.FallbackController
 
-  def index(conn, _params) do
-    workingtimes = Timer.list_workingtimes()
+  def index(conn, %{"userId" => userId}, _params) do
+    startDate = _params["start"]
+    endDate = _params["end"]
+    workingtimes = Timer.get_working_time_by_userid!(userId, startDate, endDate)
     render(conn, "index.json", workingtimes: workingtimes)
   end
 
-  def create(conn, %{"working_time" => working_time_params}) do
+  def create(conn, %{"userId" => userId}, %{"working_time" => working_time_params}) do
     with {:ok, %WorkingTime{} = working_time} <- Timer.create_working_time(working_time_params) do
       conn
       |> put_status(:created)
@@ -20,8 +22,8 @@ defmodule TimemanagerWeb.WorkingTimeController do
     end
   end
 
-  def show(conn, %{"id" => id}) do
-    working_time = Timer.get_working_time!(id)
+  def show(conn, %{"id" => id}, %{"userId" => userId}) do
+    working_time = Timer.get_all_working_time_by_userId!(id, userId)
     render(conn, "show.json", working_time: working_time)
   end
 
