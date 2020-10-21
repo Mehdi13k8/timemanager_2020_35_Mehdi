@@ -1,30 +1,64 @@
 <template>
-  <div ref="test">
-  test {{ msg }}
-
-  </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Debut</th>
+      <th scope="col">Fin</th>
+      <th scope="col">Nombre Heures</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <template v-for="wrktime in result">
+    <tr>
+        <td>{{wrktime.start}}</td>
+        <td>{{wrktime.end}}</td>
+        <td>{{wrktime.workduration}}</td>
+        <td><button type="button" class="btn btn-secondary">Edit</button></td>
+        <td><button type="button" class="btn btn-warning">Delete</button></td>
+    </tr>
+    </template>
+  </tbody>
+</table>
 </template>
 
 <script>
 export default {
-  name: 'Accueil',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      workingtimes: [{
+          start: "2020-10-20 08:00:00",
+          end: "2020-10-20 17:00:00",
+        },
+        {
+        start: "2020-10-21 08:00:00",
+        end: "2020-10-21 15:00:00",
+      }],
+      name: "Accueil"
     }
   },
-    mounted () {
-    axios
-      .get('https://api.coindesk.com/v1/bpi/currentprice.json')
-      .then(response => (this.info = response))
+  computed: {
+    result: function() {
+      return this.workingtimes.map((b) => {
+        // tmp = Date.parse(b.end) - Date.parse(b.start)
+        const tmp =  Math.abs(Date.parse(b.end) - Date.parse(b.start));
+        const diffTime = (tmp / (1000 * 60 * 60)); //millisec to heure
+        b.workduration = diffTime // traduit la valeur
+        return b
+      });
+    }
   }
-})
-
+  //   mounted () {
+  //   axios
+  //     .get('https://api.coindesk.com/v1/bpi/currentprice.json')
+  //     .then(response => (this.info = response))
+  // }
 }
 </script>
 
 <style scoped>
-body {
+/* body {
   font-family: Helvetica Neue, Arial, sans-serif;
   font-size: 14px;
   color: #444;
@@ -83,5 +117,5 @@ th.active .arrow {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 4px solid #fff;
-}
+} */
 </style>
