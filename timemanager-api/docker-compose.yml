@@ -5,10 +5,10 @@ services:
     build: .
     # image: docker.io/codereviewvideos/docker-phoenix
     command: >
-      bash -c "mix deps.get --force && mix ecto.create && yes | mix ecto.migrate && mix phx.server"
+      bash -c "mix deps.get --force && mix ecto.create && echo Y | mix ecto.migrate && mix phx.server"
     # mix ecto.create && yes | mix phx.gen.json Account User users username:string email:string &&
     #      yes | mix phx.gen.json Timer Clock clocks time:datetime status:boolean user:references:users &&
-    #      yes | mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users && 
+    #      yes | mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users &&
 #&& mix ecto.migrate  Genius I'm
     # command: mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users --force
     # command: mix ecto.migrate --force
