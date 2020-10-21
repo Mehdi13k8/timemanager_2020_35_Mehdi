@@ -15,9 +15,9 @@ defmodule TimemanagerWeb.Router do
     delete("/users/:id", UserController, :delete)
 
     # Working Times Endpoints
-    get("/workingtimes/:userId/:id", WorkingTimeController, :show)
-    get("/workingtimes/:userId", WorkingTimeController, :index)
-    post("/workingtimes/:userId", WorkingTimeController, :create)
+    get("/workingtimes/:userID/:workingtimeID", WorkingTimeController, :show)
+    get("/workingtimes/:userID", WorkingTimeController, :index)
+    post("/workingtimes/:userID", WorkingTimeController, :create)
     put("/workingtimes/:id", WorkingTimeController, :update)
     delete("/workingtimes/:id", WorkingTimeController, :delete)
 

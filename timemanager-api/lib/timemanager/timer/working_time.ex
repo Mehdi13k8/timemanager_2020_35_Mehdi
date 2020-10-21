@@ -17,6 +17,5 @@ defmodule Timemanager.Timer.WorkingTime do
     working_time
     |> cast(attrs, [:start, :end, :user])
     |> validate_required([:start, :end, :user])
-    |> cast_assoc(:users)
   end
 end

@@ -12,11 +12,9 @@ defmodule TimemanagerWeb.ClockController do
   #end
 
   def create(conn, %{"userID" => userID}) do
-    clock = %{"time" => NaiveDateTime.add(NaiveDateTime.utc_now(), 7200), "user" => userID, "status" => true }
-    with {:ok, %Clock{} = clock} <- Timer.create_clock(clock) do
+    with {:ok, %Clock{} = clock} <- Timer.create_clock(userID) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
       |> render("show.json", clock: clock)
     end
   end

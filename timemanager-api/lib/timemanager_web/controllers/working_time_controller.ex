@@ -13,17 +13,16 @@ defmodule TimemanagerWeb.WorkingTimeController do
     render(conn, "index.json", workingtimes: workingtimes)
   end
 
-  def create(conn, %{"userID" => userID}, %{"working_time" => working_time_params}) do
-    with {:ok, %WorkingTime{} = working_time} <- Timer.create_working_time(working_time_params) do
+  def create(conn, %{"userID" => userID}) do
+    with {:ok, %WorkingTime{} = working_time} <- Timer.create_working_time(userID) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", Routes.working_time_path(conn, :show, working_time))
       |> render("show.json", working_time: working_time)
     end
   end
 
-  def show(conn, %{"id" => id}, %{"userID" => userID}) do
-    working_time = Timer.get_all_working_time_by_userId!(id, userID)
+  def show(conn, %{"userID" => userID, "workingtimeID" => id}) do
+    working_time = Timer.get_all_working_time_by_userId!(userID, id)
     render(conn, "show.json", working_time: working_time)
   end
 

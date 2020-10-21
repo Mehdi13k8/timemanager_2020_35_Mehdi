@@ -50,8 +50,10 @@ defmodule Timemanager.Timer do
 
   """
   def create_clock(attrs \\ %{}) do
+    IO.puts("#{attrs}")
+    clock = %{"time" => NaiveDateTime.local_now(), "user" => attrs, "status" => true }
     %Clock{}
-    |> Clock.changeset(attrs)
+    |> Clock.changeset(clock)
     |> Repo.insert()
   end
 
@@ -134,7 +136,7 @@ defmodule Timemanager.Timer do
 
   def get_working_time!(id), do: Repo.get!(WorkingTime, [id: id])
 
-  def get_all_working_time_by_userId!(id, userId), do: Repo.get!(WorkingTime, [id: id, user: userId])
+  def get_all_working_time_by_userId!(userID, workingtimeID), do: Repo.get_by!(WorkingTime, [id: workingtimeID, user: userID])
 
   def get_working_time_by_user!(params) do
     query = from(WorkingTime, where: [user_id: ^params["userID"], start: ^params["start"], end: ^params["end"]])
@@ -153,8 +155,12 @@ defmodule Timemanager.Timer do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_working_time(attrs, user_id \\ %{}) do
-    body = %{"start" => attrs["start"], "end" => attrs["end"], "user" => user_id}
+  def create_working_time(user_id \\ %{}) do
+    body = %{
+      "start" => NaiveDateTime.local_now(),
+      "end" => NaiveDateTime.add(NaiveDateTime.local_now(), 7200),
+      "user" => user_id
+    }
     %WorkingTime{}
     |> WorkingTime.changeset(body)
     |> Repo.insert()
