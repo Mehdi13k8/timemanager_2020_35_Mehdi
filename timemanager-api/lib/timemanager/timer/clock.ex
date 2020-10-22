@@ -2,10 +2,8 @@ defmodule Timemanager.Timer.Clock do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Timemanager.Account.User
-
   schema "clocks" do
-    field :status, :boolean, default: false
+    field :status, :boolean, default: true
     field :time, :naive_datetime
     field :user, :id
 

@@ -17,13 +17,3 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix
-https://dev.to/hlappa/development-environment-for-elixir-phoenix-with-docker-and-docker-compose-2g17
-Lien le + utile
-
-docker-compose up
-# ctrc + c
-docker-compose run web mix ecto.create
-docker-compose up
-
-Docker compose put "mix deps.get" instead of mix phx server
-& rerun it after removing it to get dependency

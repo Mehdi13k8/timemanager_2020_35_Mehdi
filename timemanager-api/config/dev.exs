@@ -1,14 +1,11 @@
 use Mix.Config
 
-database_url = System.get_env("DATABASE_URL")
-
 # Configure your database
 config :timemanager, Timemanager.Repo,
   username: "postgres",
   password: "postgres",
   database: "timemanager_dev",
   hostname: System.get_env("HOSTNAME_URL") || "localhost",
-#  url: database_url,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -20,7 +17,7 @@ config :timemanager, Timemanager.Repo,
 # with webpack to recompile .js and .css sources.
 config :timemanager, TimemanagerWeb.Endpoint,
   http: [port: 4000],
-  debug_errors: false,
+  debug_errors: true,
   code_reloader: true,
   check_origin: false,
   watchers: []
