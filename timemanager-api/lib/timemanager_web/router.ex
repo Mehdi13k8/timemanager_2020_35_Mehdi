@@ -2,28 +2,27 @@ defmodule TimemanagerWeb.Router do
   use TimemanagerWeb, :router
 
   pipeline :api do
+    plug CORSPlug
     plug :accepts, ["json"]
   end
 
   scope "/api", TimemanagerWeb do
     pipe_through :api
 
+    # Users Endpoints
     get("/users/:id", UserController, :show)
     get("/users", UserController, :index)
     post("/users", UserController, :create)
     put("/users/:id", UserController, :update)
     delete("/users/:id", UserController, :delete)
 
-    # Working Times Endpoints
-    get("/workingtimes/:userID/:workingtimeID", WorkingTimeController, :show)
-    get("/workingtimes/:userID", WorkingTimeController, :index)
-    post("/workingtimes/:userID", WorkingTimeController, :create)
-    put("/workingtimes/:id", WorkingTimeController, :update)
-    delete("/workingtimes/:id", WorkingTimeController, :delete)
-
-    # Clocks Endpoints
-    get("/clocks/:userID", ClockController, :show)
+    # Clocs Endpoints
+    get("/clocks/:userID", ClockController, :index)
     post("/clocks/:userID", ClockController, :create)
+
+    # Working Times Endpoints
+    post("/workingtimes/:userID", WorkingTimeController, :create)
+    get("/workingtimes/:userID", WorkingTimeController, :index)
   end
 
   # Enables LiveDashboard only for development

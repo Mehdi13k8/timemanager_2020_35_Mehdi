@@ -7,7 +7,7 @@ defmodule TimemanagerWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_timemanager_key",
-    signing_salt: "aGhlQudD"
+    signing_salt: "vgk3hl5U"
   ]
 
   socket "/socket", TimemanagerWeb.UserSocket,
@@ -48,5 +48,6 @@ defmodule TimemanagerWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug CORSPlug
   plug TimemanagerWeb.Router
 end

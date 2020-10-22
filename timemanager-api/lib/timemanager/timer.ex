@@ -35,7 +35,9 @@ defmodule Timemanager.Timer do
       ** (Ecto.NoResultsError)
 
   """
-  def get_clock!(user_id), do: Repo.get_by!(Clock, user: user_id)
+  def get_clock!(id), do: Repo.get!(Clock, id)
+
+  def get_user_clocks!(user_id), do: Repo.all(from c in Clock, where: c.user == ^user_id)
 
   @doc """
   Creates a clock.
@@ -50,10 +52,8 @@ defmodule Timemanager.Timer do
 
   """
   def create_clock(attrs \\ %{}) do
-    IO.puts("#{attrs}")
-    clock = %{"time" => NaiveDateTime.local_now(), "user" => attrs, "status" => true }
     %Clock{}
-    |> Clock.changeset(clock)
+    |> Clock.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -133,15 +133,8 @@ defmodule Timemanager.Timer do
       ** (Ecto.NoResultsError)
 
   """
-
-  def get_working_time!(id), do: Repo.get!(WorkingTime, [id: id])
-
-  def get_all_working_time_by_userId!(userID, workingtimeID), do: Repo.get_by!(WorkingTime, [id: workingtimeID, user: userID])
-
-  def get_working_time_by_user!(params) do
-    query = from(WorkingTime, where: [user_id: ^params["userID"], start: ^params["start"], end: ^params["end"]])
-    Repo.all(query)
-  end
+  # def get_working_time!(id), do: Repo.get!(WorkingTime, id)
+  def get_working_times!(user_id, startDate, endDate), do: Repo.all(from w in WorkingTime, where: w.start >= ^startDate and w.end <= ^endDate and w.user == ^user_id)
 
   @doc """
   Creates a working_time.
@@ -155,14 +148,9 @@ defmodule Timemanager.Timer do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_working_time(user_id \\ %{}) do
-    body = %{
-      "start" => NaiveDateTime.local_now(),
-      "end" => NaiveDateTime.add(NaiveDateTime.local_now(), 7200),
-      "user" => user_id
-    }
+  def create_working_time(attrs \\ %{}) do
     %WorkingTime{}
-    |> WorkingTime.changeset(body)
+    |> WorkingTime.changeset(attrs)
     |> Repo.insert()
   end
 

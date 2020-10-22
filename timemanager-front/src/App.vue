@@ -1,13 +1,35 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <User 
+      v-if="user.id === 0"
+      id="user-profile"
+      :user=user
+      :changeUser="changeUser"
+    />
     <router-view/>
   </div>
 </template>
 
 <script>
+import User from '@/components/User';
+
 export default {
-  name: 'App'
+  name: 'App',
+  components: { User },
+  data() {
+    return {
+      user: {
+        email: '',
+        username: '',
+        id: 0
+      }
+    }
+  },
+  methods: {
+    changeUser(user) {
+      this.user = user;
+    }
+  }
 }
 </script>
 
@@ -19,5 +41,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  padding: 2% 10%;
+}
+#user-profile {
+  width: 50%;
+  margin: 2% auto;
 }
 </style>

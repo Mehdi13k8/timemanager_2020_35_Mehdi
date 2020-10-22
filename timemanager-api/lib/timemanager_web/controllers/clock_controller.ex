@@ -6,23 +6,24 @@ defmodule TimemanagerWeb.ClockController do
 
   action_fallback TimemanagerWeb.FallbackController
 
-  #def index(conn, _params) do
-  #  clocks = Timer.list_clocks()
-  #  render(conn, "index.json", clocks: clocks)
-  #end
+  def index(conn, %{"userID" => user_id}) do
+    clocks = Timer.get_user_clocks!(user_id)
+    render(conn, "index.json", clocks: clocks)
+  end
 
-  def create(conn, %{"userID" => userID}) do
-    with {:ok, %Clock{} = clock} <- Timer.create_clock(userID) do
+  def create(conn, %{"userID" => user_id, "clock" => clock}) do
+    clock = %{"user" => user_id, "time" => NaiveDateTime.from_iso8601!(clock["time"]), "status" => clock["status"]}
+    with {:ok, %Clock{} = clock} <- Timer.create_clock(clock) do
       conn
       |> put_status(:created)
       |> render("show.json", clock: clock)
     end
   end
 
-  def show(conn, %{"userID" => userID}) do
-    clock = Timer.get_clock!(userID)
-    render(conn, "show.json", clock: clock)
-  end
+  #def show(conn, %{"id" => id}) do
+  #  clock = Timer.get_clock!(id)
+  #  render(conn, "show.json", clock: clock)
+  #end
 
   #def update(conn, %{"id" => id, "clock" => clock_params}) do
   #  clock = Timer.get_clock!(id)

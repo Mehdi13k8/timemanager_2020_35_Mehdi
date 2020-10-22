@@ -6,9 +6,10 @@ defmodule TimemanagerWeb.UserController do
 
   action_fallback TimemanagerWeb.FallbackController
 
-  def index(conn, _params) do
-    email = _params["email"]
-    username = _params["username"]
+  def index(conn, params) do
+    email = params["email"]
+    username = params["username"]
+
     user = Account.get_user_by_email_username!(email, username)
     render(conn, "show.json", user: user)
   end
@@ -17,6 +18,7 @@ defmodule TimemanagerWeb.UserController do
     with {:ok, %User{} = user} <- Account.create_user(user_params) do
       conn
       |> put_status(:created)
+      |> put_resp_header("location", Routes.user_path(conn, :show, user))
       |> render("show.json", user: user)
     end
   end
