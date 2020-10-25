@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  front:
+    container_name: VueJs
+    command: npm start
+    build:
+      context: ../timemanager-front/.
+      dockerfile: Dockerfile
+    volumes:
+      - '../timemanager-front/.:/app'
+      - '/app/node_modules'
+    ports:
+      - '8081:8081'
+  
   web:
     build: .
     # image: docker.io/codereviewvideos/docker-phoenix
