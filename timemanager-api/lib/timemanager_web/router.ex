@@ -10,6 +10,7 @@ defmodule TimemanagerWeb.Router do
     pipe_through :api
 
     # Users Endpoints
+    get("/users/all", UserController, :show_all)
     get("/users/:id", UserController, :show)
     get("/users", UserController, :index)
     post("/users", UserController, :create)

@@ -28,6 +28,11 @@ defmodule TimemanagerWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
+  def show_all(conn, _params) do
+    users = Account.list_users()
+    render(conn, "index.json", users: users)
+  end
+
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Account.get_user!(id)
 

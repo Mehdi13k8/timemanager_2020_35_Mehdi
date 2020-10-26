@@ -76,7 +76,7 @@ let monday =
   ":" +
   (lundi.getSeconds() < 10 ? "0" : "") +
   lundi.getSeconds();
-alert(monday);
+  // alert(monday);
 
 export default {
   data() {
