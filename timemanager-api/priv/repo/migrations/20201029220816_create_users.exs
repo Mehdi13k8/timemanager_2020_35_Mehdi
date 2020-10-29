@@ -3,8 +3,10 @@ defmodule Timemanager.Repo.Migrations.CreateUsers do
 
   def change do
     create table(:users) do
-      add :username, :string, null: false, reuired: true
-      add :email, :string, null: false, reuired: true
+      add :username, :string
+      add :email, :string
+      add :password_hash, :string
+      add :role, :string
 
       timestamps()
     end

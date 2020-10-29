@@ -1,12 +1,12 @@
-defmodule Timemanager.Account do
+defmodule Timemanager.Accounts do
   @moduledoc """
-  The Account context.
+  The Accounts context.
   """
 
   import Ecto.Query, warn: false
   alias Timemanager.Repo
 
-  alias Timemanager.Account.User
+  alias Timemanager.Accounts.User
 
   @doc """
   Returns the list of users.

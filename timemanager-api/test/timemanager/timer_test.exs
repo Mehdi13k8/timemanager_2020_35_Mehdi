@@ -124,4 +124,65 @@ defmodule Timemanager.TimerTest do
       assert %Ecto.Changeset{} = Timer.change_working_time(working_time)
     end
   end
+
+  describe "workingtimes" do
+    alias Timemanager.Timer.WorkingTimes
+
+    @valid_attrs %{end: ~N[2010-04-17 14:00:00], start: ~N[2010-04-17 14:00:00]}
+    @update_attrs %{end: ~N[2011-05-18 15:01:01], start: ~N[2011-05-18 15:01:01]}
+    @invalid_attrs %{end: nil, start: nil}
+
+    def working_times_fixture(attrs \\ %{}) do
+      {:ok, working_times} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Timer.create_working_times()
+
+      working_times
+    end
+
+    test "list_workingtimes/0 returns all workingtimes" do
+      working_times = working_times_fixture()
+      assert Timer.list_workingtimes() == [working_times]
+    end
+
+    test "get_working_times!/1 returns the working_times with given id" do
+      working_times = working_times_fixture()
+      assert Timer.get_working_times!(working_times.id) == working_times
+    end
+
+    test "create_working_times/1 with valid data creates a working_times" do
+      assert {:ok, %WorkingTimes{} = working_times} = Timer.create_working_times(@valid_attrs)
+      assert working_times.end == ~N[2010-04-17 14:00:00]
+      assert working_times.start == ~N[2010-04-17 14:00:00]
+    end
+
+    test "create_working_times/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Timer.create_working_times(@invalid_attrs)
+    end
+
+    test "update_working_times/2 with valid data updates the working_times" do
+      working_times = working_times_fixture()
+      assert {:ok, %WorkingTimes{} = working_times} = Timer.update_working_times(working_times, @update_attrs)
+      assert working_times.end == ~N[2011-05-18 15:01:01]
+      assert working_times.start == ~N[2011-05-18 15:01:01]
+    end
+
+    test "update_working_times/2 with invalid data returns error changeset" do
+      working_times = working_times_fixture()
+      assert {:error, %Ecto.Changeset{}} = Timer.update_working_times(working_times, @invalid_attrs)
+      assert working_times == Timer.get_working_times!(working_times.id)
+    end
+
+    test "delete_working_times/1 deletes the working_times" do
+      working_times = working_times_fixture()
+      assert {:ok, %WorkingTimes{}} = Timer.delete_working_times(working_times)
+      assert_raise Ecto.NoResultsError, fn -> Timer.get_working_times!(working_times.id) end
+    end
+
+    test "change_working_times/1 returns a working_times changeset" do
+      working_times = working_times_fixture()
+      assert %Ecto.Changeset{} = Timer.change_working_times(working_times)
+    end
+  end
 end

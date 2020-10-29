@@ -6,13 +6,17 @@ defmodule TimemanagerWeb.UserControllerTest do
 
   @create_attrs %{
     email: "some email",
+    password_hash: "some password_hash",
+    role: "some role",
     username: "some username"
   }
   @update_attrs %{
     email: "some updated email",
+    password_hash: "some updated password_hash",
+    role: "some updated role",
     username: "some updated username"
   }
-  @invalid_attrs %{email: nil, username: nil}
+  @invalid_attrs %{email: nil, password_hash: nil, role: nil, username: nil}
 
   def fixture(:user) do
     {:ok, user} = Account.create_user(@create_attrs)
@@ -40,6 +44,8 @@ defmodule TimemanagerWeb.UserControllerTest do
       assert %{
                "id" => id,
                "email" => "some email",
+               "password_hash" => "some password_hash",
+               "role" => "some role",
                "username" => "some username"
              } = json_response(conn, 200)["data"]
     end
@@ -62,6 +68,8 @@ defmodule TimemanagerWeb.UserControllerTest do
       assert %{
                "id" => id,
                "email" => "some updated email",
+               "password_hash" => "some updated password_hash",
+               "role" => "some updated role",
                "username" => "some updated username"
              } = json_response(conn, 200)["data"]
     end

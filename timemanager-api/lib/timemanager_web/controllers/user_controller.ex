@@ -6,12 +6,9 @@ defmodule TimemanagerWeb.UserController do
 
   action_fallback TimemanagerWeb.FallbackController
 
-  def index(conn, params) do
-    email = params["email"]
-    username = params["username"]
-
-    user = Account.get_user_by_email_username!(email, username)
-    render(conn, "show.json", user: user)
+  def index(conn, _params) do
+    users = Account.list_users()
+    render(conn, "index.json", users: users)
   end
 
   def create(conn, %{"user" => user_params}) do
@@ -26,11 +23,6 @@ defmodule TimemanagerWeb.UserController do
   def show(conn, %{"id" => id}) do
     user = Account.get_user!(id)
     render(conn, "show.json", user: user)
-  end
-
-  def show_all(conn, _params) do
-    users = Account.list_users()
-    render(conn, "index.json", users: users)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do

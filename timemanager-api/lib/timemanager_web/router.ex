@@ -6,14 +6,17 @@ defmodule TimemanagerWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", TimemanagerWeb do
+  scope "/api/v1", TimemanagerWeb do
     pipe_through :api
 
+    # Users Login / Register
+    # resources "/users", UserController, only: [:create, :show]
+
     # Users Endpoints
+    post("/users", UserController, :create)
     get("/users/all", UserController, :show_all)
     get("/users/:id", UserController, :show)
     get("/users", UserController, :index)
-    post("/users", UserController, :create)
     put("/users/:id", UserController, :update)
     delete("/users/:id", UserController, :delete)
 

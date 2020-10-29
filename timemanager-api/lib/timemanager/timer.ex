@@ -37,8 +37,6 @@ defmodule Timemanager.Timer do
   """
   def get_clock!(id), do: Repo.get!(Clock, id)
 
-  def get_user_clocks!(user_id), do: Repo.all(from c in Clock, where: c.user == ^user_id)
-
   @doc """
   Creates a clock.
 
@@ -104,7 +102,7 @@ defmodule Timemanager.Timer do
     Clock.changeset(clock, attrs)
   end
 
-  alias Timemanager.Timer.WorkingTime
+  alias Timemanager.Timer.WorkingTimes
 
   @doc """
   Returns the list of workingtimes.
@@ -112,92 +110,91 @@ defmodule Timemanager.Timer do
   ## Examples
 
       iex> list_workingtimes()
-      [%WorkingTime{}, ...]
+      [%WorkingTimes{}, ...]
 
   """
   def list_workingtimes do
-    Repo.all(WorkingTime)
+    Repo.all(WorkingTimes)
   end
 
   @doc """
-  Gets a single working_time.
+  Gets a single working_times.
 
-  Raises `Ecto.NoResultsError` if the Working time does not exist.
+  Raises `Ecto.NoResultsError` if the Working times does not exist.
 
   ## Examples
 
-      iex> get_working_time!(123)
-      %WorkingTime{}
+      iex> get_working_times!(123)
+      %WorkingTimes{}
 
-      iex> get_working_time!(456)
+      iex> get_working_times!(456)
       ** (Ecto.NoResultsError)
 
   """
-  # def get_working_time!(id), do: Repo.get!(WorkingTime, id)
-  def get_working_times!(user_id, startDate, endDate), do: Repo.all(from w in WorkingTime, where: w.start >= ^startDate and w.end <= ^endDate and w.user == ^user_id)
+  def get_working_times!(id), do: Repo.get!(WorkingTimes, id)
 
   @doc """
-  Creates a working_time.
+  Creates a working_times.
 
   ## Examples
 
-      iex> create_working_time(%{field: value})
-      {:ok, %WorkingTime{}}
+      iex> create_working_times(%{field: value})
+      {:ok, %WorkingTimes{}}
 
-      iex> create_working_time(%{field: bad_value})
+      iex> create_working_times(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_working_time(attrs \\ %{}) do
-    %WorkingTime{}
-    |> WorkingTime.changeset(attrs)
+  def create_working_times(attrs \\ %{}) do
+    %WorkingTimes{}
+    |> WorkingTimes.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a working_time.
+  Updates a working_times.
 
   ## Examples
 
-      iex> update_working_time(working_time, %{field: new_value})
-      {:ok, %WorkingTime{}}
+      iex> update_working_times(working_times, %{field: new_value})
+      {:ok, %WorkingTimes{}}
 
-      iex> update_working_time(working_time, %{field: bad_value})
+      iex> update_working_times(working_times, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_working_time(%WorkingTime{} = working_time, attrs) do
-    working_time
-    |> WorkingTime.changeset(attrs)
+  def update_working_times(%WorkingTimes{} = working_times, attrs) do
+    working_times
+    |> WorkingTimes.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a working_time.
+  Deletes a working_times.
 
   ## Examples
 
-      iex> delete_working_time(working_time)
-      {:ok, %WorkingTime{}}
+      iex> delete_working_times(working_times)
+      {:ok, %WorkingTimes{}}
 
-      iex> delete_working_time(working_time)
+      iex> delete_working_times(working_times)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_working_time(%WorkingTime{} = working_time) do
-    Repo.delete(working_time)
+  def delete_working_times(%WorkingTimes{} = working_times) do
+    Repo.delete(working_times)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking working_time changes.
+  Returns an `%Ecto.Changeset{}` for tracking working_times changes.
 
   ## Examples
 
-      iex> change_working_time(working_time)
-      %Ecto.Changeset{data: %WorkingTime{}}
+      iex> change_working_times(working_times)
+      %Ecto.Changeset{data: %WorkingTimes{}}
 
   """
-  def change_working_time(%WorkingTime{} = working_time, attrs \\ %{}) do
-    WorkingTime.changeset(working_time, attrs)
+  def change_working_times(%WorkingTimes{} = working_times, attrs \\ %{}) do
+    WorkingTimes.changeset(working_times, attrs)
   end
 end
