@@ -1,19 +1,28 @@
 defmodule TimemanagerWeb.Router do
   use TimemanagerWeb, :router
 
+  alias Timemanager.Guardian
+
   pipeline :api do
     plug CORSPlug
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_authenticated do
+    plug Guardian.AuthPipeline
+  end
+
   scope "/api/v1", TimemanagerWeb do
     pipe_through :api
-
     # Users Login / Register
+      post("/users/sign_in", UserController, :sign_in)
+      post("/users", UserController, :create)
+    end
     # resources "/users", UserController, only: [:create, :show]
-
+  scope "/api/v1", TimemanagerWeb do
+    pipe_through [:api, :jwt_authenticated]
     # Users Endpoints
-    post("/users", UserController, :create)
+    get("/users/my_user", UserController, :show_my_user)
     get("/users/all", UserController, :show_all)
     get("/users/:id", UserController, :show)
     get("/users", UserController, :index)
