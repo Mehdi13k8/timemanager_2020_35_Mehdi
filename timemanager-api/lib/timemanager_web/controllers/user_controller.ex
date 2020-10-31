@@ -3,6 +3,7 @@ defmodule TimemanagerWeb.UserController do
 
   alias Timemanager.Account
   alias Timemanager.Account.User
+  alias Timemanager.Guardian
 
   action_fallback TimemanagerWeb.FallbackController
 

@@ -34,8 +34,10 @@ defmodule TimemanagerWeb.Router do
     post("/clocks/:userID", ClockController, :create)
 
     # Working Times Endpoints
-    post("/workingtimes/:userID", WorkingTimeController, :create)
+    get("/workingtimes/:userID/:workingtimeID", WorkingTimeController, :show)
     get("/workingtimes/:userID", WorkingTimeController, :index)
+    post("/workingtimes/:userID", WorkingTimeController, :create)
+    put("/workingtimes/:id", WorkingTimeController, :update)
   end
 
   # Enables LiveDashboard only for development
