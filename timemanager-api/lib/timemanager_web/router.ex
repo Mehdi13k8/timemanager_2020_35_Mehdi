@@ -30,13 +30,15 @@ defmodule TimemanagerWeb.Router do
     delete("/users/:id", UserController, :delete)
 
     # Clocs Endpoints
-    get("/clocks/:userID", ClockController, :index)
+    get("/clocks/:userID", ClockController, :show)
     post("/clocks/:userID", ClockController, :create)
 
     # Working Times Endpoints
-    get("/workingtimes/:userID/:workingtimeID", WorkingTimeController, :show)
-    get("/workingtimes/:userID", WorkingTimeController, :index)
     post("/workingtimes/:userID", WorkingTimeController, :create)
+    get("/workingtimes/:userID", WorkingTimeController, :index)
+    get("/workingtimes/:userID/:workingtimeID", WorkingTimeController, :show) # Get 1 wrktime by Id
+    # get("/workingtimes/:userID", WorkingTimeController, :index)
+    # post("/workingtimes/:userID", WorkingTimeController, :create)
     put("/workingtimes/:id", WorkingTimeController, :update)
   end
 

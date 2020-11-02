@@ -11,6 +11,8 @@ import './../node_modules/bootstrap/dist/js/bootstrap.min.js';
 import Raphael from 'raphael/raphael'
 global.Raphael = Raphael
 
+Vue.prototype.$hostname = 'http://localhost:4000/api/v1/' // Url de L'api Chez moi avec Docker !!!
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -18,5 +20,8 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  beforeCreate: function () {
+  }
+
 })

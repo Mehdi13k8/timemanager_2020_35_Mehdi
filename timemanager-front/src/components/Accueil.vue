@@ -23,64 +23,13 @@
 </template>
 
 <script>
-import { jquery } from "./../../node_modules/jQuery/tmp/jquery";
-import { DonutChart, BarChart, LineChart, AreaChart } from "vue-morris";
-import axios from "axios";
-
-let d = new Date();
-var day = d.getDay();
-let diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
-
-let lundi = new Date();
-var distance = diff - d.getDate();
-lundi.setDate(d.getDate() + distance);
-// alert(lundi.toString()); // Distance est forcément "négatif" ex 12 + (-3) = 9
-let vendredi = new Date();
-vendredi.setDate(lundi.getDate() + 5 - 1);
-// alert(vendredi.toString()); // Distance est forcément "négatif" ex 12 + (-3) = 9
-
-// console.log(vendredi.getFullYear() + "-" + (vendredi.getMonth()+1) + "-" + vendredi.getDate() + " " + vendredi.getHours() + "-" + vendredi.getMinutes() + "-" + vendredi.getSeconds());
-let twoDigit;
-if (vendredi.getHours() < 10) twoDigit = "0" + twoDigit;
-else twoDigit = vendredi.getHours();
-
-// let friday = vendredi.getFullYear() + "-" + ((vendredi.getMonth()+1)<10?'0':'') + (vendredi.getMonth()+1) + "-" + (vendredi.getDate()<10?'0':'') + vendredi.getDate() + " " + (vendredi.getHours()<10?'0':'') + vendredi.getHours() + ":" + (vendredi.getMinutes()<10?'0':'') + vendredi.getMinutes() + ":" + (vendredi.getSeconds()<10?'0':'') + vendredi.getSeconds();
-// let monday = lundi.getFullYear() + "-" + ((lundi.getMonth()+1)<10?'0':'') + (lundi.getMonth()+1) + "-" + (lundi.getDate()<10?'0':'') + lundi.getDate() + " " + (lundi.getHours()<10?'0':'') + lundi.getHours() + ":" + (lundi.getMinutes()<10?'0':'') + lundi.getMinutes() + ":" + (lundi.getSeconds()<10?'0':'') + lundi.getSeconds();
-let friday =
-  vendredi.getFullYear() +
-  "-" +
-  (vendredi.getMonth() + 1 < 10 ? "0" : "") +
-  (vendredi.getMonth() + 1) +
-  "-" +
-  (vendredi.getDate() < 10 ? "0" : "") +
-  vendredi.getDate() +
-  " " +
-  "23" +
-  ":" +
-  "59" +
-  ":" +
-  (vendredi.getSeconds() < 10 ? "0" : "") +
-  vendredi.getSeconds();
-let monday =
-  lundi.getFullYear() +
-  "-" +
-  (lundi.getMonth() + 1 < 10 ? "0" : "") +
-  (lundi.getMonth() + 1) +
-  "-" +
-  (lundi.getDate() < 10 ? "0" : "") +
-  lundi.getDate() +
-  " " +
-  "00" +
-  ":" +
-  "00" +
-  ":" +
-  (lundi.getSeconds() < 10 ? "0" : "") +
-  lundi.getSeconds();
-  // alert(monday);
-
 export default {
+  beforeCreate: function () {
+    this.ApiUrl = this.$hostname;
+  },
   data() {
     return {
+      // ApiUrl : '', // Prédéclaré mais before create se lance avant, donc useless  beforeCreate -> function 
       info: null,
       userid: 1,
       workingtimes: [
@@ -295,13 +244,55 @@ export default {
       return arr;
     },
   },
-  mounted() {
+  async mounted() {
+    // Login pour le test, normalement tu delete ça antoine
+    var userId = '';
+    var jwt = '';
+    var data = JSON.stringify({"email":"foo2@bar.com","password":"Xdveg567"});
+    var config = {
+      method: 'post',
+      url: this.ApiUrl + 'users/sign_in',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    try {
+    let tmp = await axios(config);
+    jwt = tmp.data.jwt;
+    }
+    catch (err) {
+    }
+
+
+var config = {
+  method: 'get',
+      url: this.ApiUrl + 'users/my_user',
+  headers: { 
+    'Authorization': 'Bearer ' + jwt
+  }
+};
+
+    try {
+      let userData = await axios(config);
+      userId = userData.data.id;
+      console.log(userId.id);
+    }
+    catch (err) {
+    }
+
+
     axios
       .get(
-        "http://localhost:4000/api/workingtimes/1?start=" +
+        this.ApiUrl + "workingtimes/" + userId + "?start=" +
           monday /*2019-10-21 08:52:16*/ +
           "&end=" +
-          friday /*2021-10-21 20:52:16*/
+          friday /*2021-10-21 20:52:16*/,
+          { 
+            headers: {
+              'Authorization': 'Bearer ' + jwt
+            }
+          }
       )
       .then((response) => {
         this.info = response;
@@ -319,4 +310,59 @@ export default {
     },
   },
 };
+
+import { jquery } from "./../../node_modules/jQuery/tmp/jquery";
+import { DonutChart, BarChart, LineChart, AreaChart } from "vue-morris";
+import axios from "axios";
+let d = new Date();
+var day = d.getDay();
+let diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+
+let lundi = new Date();
+var distance = diff - d.getDate();
+lundi.setDate(d.getDate() + distance);
+// alert(lundi.toString()); // Distance est forcément "négatif" ex 12 + (-3) = 9
+let vendredi = new Date();
+vendredi.setDate(lundi.getDate() + 5 - 1);
+// alert(vendredi.toString()); // Distance est forcément "négatif" ex 12 + (-3) = 9
+
+// console.log(vendredi.getFullYear() + "-" + (vendredi.getMonth()+1) + "-" + vendredi.getDate() + " " + vendredi.getHours() + "-" + vendredi.getMinutes() + "-" + vendredi.getSeconds());
+let twoDigit;
+if (vendredi.getHours() < 10) twoDigit = "0" + twoDigit;
+else twoDigit = vendredi.getHours();
+
+// let friday = vendredi.getFullYear() + "-" + ((vendredi.getMonth()+1)<10?'0':'') + (vendredi.getMonth()+1) + "-" + (vendredi.getDate()<10?'0':'') + vendredi.getDate() + " " + (vendredi.getHours()<10?'0':'') + vendredi.getHours() + ":" + (vendredi.getMinutes()<10?'0':'') + vendredi.getMinutes() + ":" + (vendredi.getSeconds()<10?'0':'') + vendredi.getSeconds();
+// let monday = lundi.getFullYear() + "-" + ((lundi.getMonth()+1)<10?'0':'') + (lundi.getMonth()+1) + "-" + (lundi.getDate()<10?'0':'') + lundi.getDate() + " " + (lundi.getHours()<10?'0':'') + lundi.getHours() + ":" + (lundi.getMinutes()<10?'0':'') + lundi.getMinutes() + ":" + (lundi.getSeconds()<10?'0':'') + lundi.getSeconds();
+let friday =
+  vendredi.getFullYear() +
+  "-" +
+  (vendredi.getMonth() + 1 < 10 ? "0" : "") +
+  (vendredi.getMonth() + 1) +
+  "-" +
+  (vendredi.getDate() < 10 ? "0" : "") +
+  vendredi.getDate() +
+  " " +
+  "23" +
+  ":" +
+  "59" +
+  ":" +
+  (vendredi.getSeconds() < 10 ? "0" : "") +
+  vendredi.getSeconds();
+let monday =
+  lundi.getFullYear() +
+  "-" +
+  (lundi.getMonth() + 1 < 10 ? "0" : "") +
+  (lundi.getMonth() + 1) +
+  "-" +
+  (lundi.getDate() < 10 ? "0" : "") +
+  lundi.getDate() +
+  " " +
+  "00" +
+  ":" +
+  "00" +
+  ":" +
+  (lundi.getSeconds() < 10 ? "0" : "") +
+  lundi.getSeconds();
+// alert(monday);
+
 </script>
