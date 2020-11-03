@@ -177,6 +177,16 @@ export default {
       var obj;
       var obj_all_users;
       var obj_all_usersWrktme = [];
+      let MondayallHours = 0;
+      let MondayUserNb = 0;
+      let TuesdayallHours = 0;
+      let TuesdayUserNb = 0;
+      let WednesdayallHours = 0;
+      let WednesdayUserNb = 0;
+      let ThursdayallHours = 0;
+      let ThursdayUserNb = 0;
+      let FridayallHours = 0;
+      let FridayUserNb = 0;
       if (this.info && this.info_all) {
         for (var key in this.info.data) {
           obj = this.info["data"][key];
@@ -237,6 +247,7 @@ export default {
             });
           }
         }
+
         for (var inkey in obj) {
           // console.log(obj[inkey]['start']);
           // console.log(obj[inkey]['end']);
@@ -255,7 +266,6 @@ export default {
               case 1:
                 if (mondayBool === true) {
                   for (var idx = 0; idx < arr.length; idx++) {
-                    // console.log(arr[idx].day);
                     if (arr[idx].day === "Monday") {
                       arr[0]["hours"] += diffTime;
                       arr[0]["a"] = arr[0]["hours"];
@@ -264,29 +274,26 @@ export default {
                 } else {
                   arr[0]["b"] = 0;
                   arr[0]["day"] = "Monday";
-                  // console.log(diffTime + " here B");
                   arr[0]["hours"] = diffTime;
                   arr[0]["total"] = 24;
                   arr[0]["a"] = arr[0]["hours"];
-                  // arr[0]["b"] = 0;
                   mondayBool = true;
                 }
                 break;
               case 2:
                 if (tuesdayBool === true) {
                   for (var idx = 0; idx < arr.length; idx++) {
-                    // console.log(arr[idx].day);
                     if (arr[idx].day === "Tuesday") {
                       arr[1]["hours"] += diffTime;
+                      arr[1]["a"] = arr[1]["hours"];
                     }
                   }
                 } else {
+                  arr[1]["b"] = 0;
                   arr[1]["day"] = "Tuesday";
-                  // console.log(diffTime + " here BTuesday");
                   arr[1]["hours"] = diffTime;
                   arr[1]["total"] = 24;
                   arr[1]["a"] = arr[1]["hours"];
-                  arr[1]["b"] = 0;
                   tuesdayBool = true;
                 }
                 break;
@@ -295,42 +302,51 @@ export default {
                   for (var idx = 0; idx < arr.length; idx++) {
                     if (arr[idx].day === "Wednesday") {
                       arr[2]["hours"] += diffTime;
+                      arr[2]["a"] = arr[2]["hours"];
                     }
                   }
                 } else {
-                  arr[2]["hours"] = diffTime;
+                  arr[2]["b"] = 0;
                   arr[2]["day"] = "Wednesday";
+                  arr[2]["hours"] = diffTime;
+                  arr[2]["total"] = 24;
+                  arr[2]["a"] = arr[2]["hours"];
+                  wednesdayBool = true;
                 }
-                arr[2]["total"] = 24;
-                wednesdayBool = true;
                 break;
               case 4:
                 if (thursdayBool === true) {
                   for (var idx = 0; idx < arr.length; idx++) {
                     if (arr[idx].day === "Thursday") {
                       arr[3]["hours"] += diffTime;
+                      arr[3]["a"] = arr[3]["hours"];
                     }
                   }
                 } else {
+                  arr[3]["b"] = 0;
                   arr[3]["day"] = "Thursday";
                   arr[3]["hours"] = diffTime;
-                  // alert(i);
                   arr[3]["total"] = 24;
+                  arr[3]["a"] = arr[3]["hours"];
+                  thursdayBool = true;
                 }
-                thursdayBool = true;
                 break;
               case 5:
                 if (fridayBool === true) {
                   for (var idx = 0; idx < arr.length; idx++) {
                     if (arr[idx].day === "Friday") {
+                      arr[4]["hours"] += diffTime;
+                      arr[4]["a"] = arr[4]["hours"];
                     }
                   }
                 } else {
+                  arr[4]["b"] = 0;
+                  arr[4]["day"] = "Thursday";
                   arr[4]["hours"] = diffTime;
-                  arr[4]["day"] = "Friday";
+                  arr[4]["total"] = 24;
+                  arr[4]["a"] = arr[4]["hours"];
+                  fridayBool = true;
                 }
-                arr[4]["total"] = 24;
-                fridayBool = true;
                 break;
               default:
                 break;
@@ -340,10 +356,13 @@ export default {
         }
 
         // Gestion des heures "moyenne" par rapport a tous les "users"
-        let MondayallHours = 0;
-
         let tmpv2;
         for (var keyUser in this.info_all.data.data) {
+          MondayallHours = 0;
+          TuesdayallHours = 0;
+          WednesdayallHours = 0;
+          ThursdayallHours = 0;
+          FridayallHours = 0;
           try {
             let tmp = await axios.get(
               this.ApiUrl +
@@ -361,19 +380,18 @@ export default {
             );
             tmpv2 = tmp;
           } catch (err) {}
-        }
-        let UsersWorkTms = tmpv2.data.data;
+          let UsersWorkTms = tmpv2.data.data;
+          let FlagMondayOneUser = false;
+          let FlagTuesdayOneUser = false;
+          let FlagWednesdayOneUser = false;
+          let FlagThursdayOneUser = false;
+          let FlagFridayOneUser = false;
         for (var inkey in UsersWorkTms) {
-          // console.log(obj[inkey]["start"]);
-          // console.log(obj[inkey]['end']);
-          // console.log(obj[inkey]['start']);
           const tmp = Math.abs(
             Date.parse(UsersWorkTms[inkey]["end"]) -
               Date.parse(UsersWorkTms[inkey]["start"])
           );
           const diffTime = tmp / (1000 * 60 * 60); //millisec to heure
-          // console.log(new Date(UsersWorkTms[inkey]["end"]).getDay() + "cal 1");
-          // console.log(new Date(UsersWorkTms[inkey]["start"]).getDay() + "call 2");
           if (
             new Date(UsersWorkTms[inkey]["end"]).getDay() ===
             new Date(UsersWorkTms[inkey]["start"]).getDay()
@@ -383,45 +401,31 @@ export default {
             switch (day) {
               case 1:
                 MondayallHours += diffTime;
-                console.log("here " + MondayallHours);
-                // alert("A == " + MondayallHours);
-                // alert(MondayallHours);
+                if (FlagMondayOneUser == false)
+                  MondayUserNb++;
+                FlagMondayOneUser = true;
                 break;
               case 2:
-                if (tuesdayBool === true) {
-                  for (var idx = 0; idx < arr.length; idx++) {
-                    if (arr[idx].day === "Tuesday") {
-                    }
-                  }
-                } else {
-                }
+                TuesdayallHours += diffTime;
+                TuesdayUserNb++;
                 break;
               case 3:
-                if (wednesdayBool === true) {
-                  for (var idx = 0; idx < arr.length; idx++) {
-                    if (arr[idx].day === "Wednesday") {
-                    }
-                  }
-                } else {
-                }
+                WednesdayallHours += diffTime;
+                if (FlagWednesdayOneUser == false)
+                  WednesdayUserNb++;
+                FlagWednesdayOneUser = true;
                 break;
               case 4:
-                if (thursdayBool === true) {
-                  for (var idx = 0; idx < arr.length; idx++) {
-                    if (arr[idx].day === "Thursday") {
-                    }
-                  }
-                } else {
-                }
+                ThursdayallHours += diffTime;
+                if (FlagThursdayOneUser == false)
+                  ThursdayUserNb++;
+                FlagThursdayOneUser = true;
                 break;
               case 5:
-                if (fridayBool === true) {
-                  for (var idx = 0; idx < arr.length; idx++) {
-                    if (arr[idx].day === "Friday") {
-                    }
-                  }
-                } else {
-                }
+                FridayallHours += diffTime;
+                if (FlagFridayOneUser == false)
+                  FridayUserNb++;
+                FlagFridayOneUser = true;
                 break;
               default:
                 break;
@@ -431,51 +435,85 @@ export default {
         }
         // alert(MondayallHours);
         // alert(JSON.stringify(tmpv2));
-        if (MondayallHours > 0);
-        arr[0]["b"] += MondayallHours;
+        if (arr[0]["b"] == undefined)
+          arr[0]["b"] = 0;
+        if (arr[1]["b"] == undefined)
+          arr[1]["b"] = 0;
+        if (arr[2]["b"] == undefined)
+          arr[2]["b"] = 0;
+        if (arr[3]["b"] == undefined)
+          arr[3]["b"] = 0;
+        if (arr[4]["b"] == undefined)
+          arr[4]["b"] = 0;
+        MondayallHours > 0 ? arr[0]["b"] += MondayallHours: null ;
+        TuesdayallHours > 0 ? arr[1]["b"] += TuesdayallHours: null ;
+        WednesdayallHours > 0 ? arr[2]["b"] += WednesdayallHours: null ;
+        ThursdayallHours > 0 ? arr[3]["b"] += ThursdayallHours: null ;
+        FridayallHours > 0 ? arr[4]["b"] += FridayallHours: null ;
+        }
       }
       if (mondayBool === false) {
-        arr[0] = new Array();
         arr[0]["day"] = "Monday";
         arr[0]["hours"] = 0;
         arr[0]["total"] = 24;
         arr[0]["a"] = 0;
+      if (arr[0]["b"] == undefined)
         arr[0]["b"] = 0;
       }
       if (tuesdayBool === false) {
-        arr[1] = new Array();
         arr[1]["day"] = "Tuesday";
         arr[1]["hours"] = 0;
         arr[1]["total"] = 24;
         arr[1]["a"] = 0;
+      if (arr[1]["b"] == undefined)
         arr[1]["b"] = 0;
       }
       if (wednesdayBool === false) {
-        arr[2] = new Array();
         arr[2]["day"] = "Wednesday";
         arr[2]["hours"] = 0;
         arr[2]["total"] = 24;
         arr[2]["a"] = 0;
-        arr[2]["b"] = 0;
+        if (arr[2]["b"] == undefined)
+          arr[2]["b"] = 0;
       }
       if (thursdayBool === false) {
-        arr[3] = new Array();
         arr[3]["day"] = "Thursday";
         arr[3]["hours"] = 0;
         arr[3]["total"] = 24;
         arr[3]["a"] = 0;
-        arr[3]["b"] = 0;
+        if (arr[3]["b"] == undefined)
+          arr[3]["b"] = 0;
       }
       if (fridayBool === false) {
-        arr[4] = new Array();
         arr[4]["day"] = "Friday";
         arr[4]["hours"] = 0;
         arr[4]["total"] = 24;
         arr[4]["a"] = 0;
-        arr[4]["b"] = 0;
+        if (arr[4]["b"] == undefined)
+          arr[4]["b"] = 0;
       }
-      // console.log(arr);
+      // Bar Bleu pour la moyenne des gens le lundi
+      MondayallHours > 0 ? arr[0]["b"] += MondayallHours: null;
+        if (arr[0]["b"] > 0)
+          arr[0]["b"] /= MondayUserNb;
 
+      TuesdayallHours > 0 ? arr[1]["b"] += TuesdayallHours: null;
+        if (arr[1]["b"] > 0)
+          arr[1]["b"] /= TuesdayUserNb;
+
+      WednesdayallHours > 0 ? arr[2]["b"] += ThursdayallHours: null;
+        if (arr[2]["b"] > 0)
+          arr[2]["b"] /= WednesdayUserNb;
+        // alert(WednesdayUserNb);
+      ThursdayallHours > 0 ? arr[3]["b"] += ThursdayallHours: null;
+        if (arr[3]["b"] > 0)
+          arr[3]["b"] /= ThursdayUserNb;
+
+      FridayallHours > 0 ? arr[4]["b"] += FridayallHours: null;
+        if (arr[4]["b"] > 0)
+          arr[4]["b"] /= FridayUserNb;
+
+      // console.log(arr);
       this.lineData = [
         { day: "Monday", a: this.rand(100), b: this.rand(100) },
         { day: "Tuesday", a: this.rand(100), b: this.rand(100) },

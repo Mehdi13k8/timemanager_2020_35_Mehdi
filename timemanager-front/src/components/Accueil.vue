@@ -31,19 +31,6 @@ export default {
     return {
       // ApiUrl : '', // Prédéclaré mais before create se lance avant, donc useless  beforeCreate -> function 
       info: null,
-      userid: 1,
-      workingtimes: [
-        {
-          start: "2020-10-20 08:00:00",
-          end: "2020-10-20 17:00:00",
-          id: 1,
-        },
-        {
-          start: "2020-10-21 08:00:00",
-          end: "2020-10-21 15:00:00",
-          id: 2,
-        },
-      ],
       name: "Accueil",
       arrayColors: ["#FF6384", "#73c000", "#FFCE56"],
       barData: [
@@ -248,7 +235,7 @@ export default {
     // Login pour le test, normalement tu delete ça antoine
     var userId = '';
     var jwt = '';
-    var data = JSON.stringify({"email":"foo2@bar.com","password":"Xdveg567"});
+    var data = JSON.stringify({"email":"foo@bar.com","password":"Xdveg567"});
     var config = {
       method: 'post',
       url: this.ApiUrl + 'users/sign_in',
@@ -276,7 +263,7 @@ var config = {
     try {
       let userData = await axios(config);
       userId = userData.data.id;
-      console.log(userId.id);
+      console.log("var == " + userId);
     }
     catch (err) {
     }
