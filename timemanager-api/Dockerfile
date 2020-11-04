@@ -19,8 +19,3 @@ RUN apt-get install build-essential -y
 RUN apt-get update && apt-get install -y \
     inotify-tools \
     && rm -rf /var/lib/apt/lists/*
-
-ADD . /HERE
-WORKDIR /HERE
-RUN mix deps.get
-WORKDIR /app
