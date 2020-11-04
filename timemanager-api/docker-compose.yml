@@ -42,8 +42,8 @@ services:
 
   mypostgres:
     image: postgres:13
-    volumes:
-        - "./volumes/postgres:/var/lib/postgresql/data"
+    # volumes:
+    #     - "./volumes/postgres:/var/lib/postgresql/data"
     ports:
       - "5432:5432"
     environment:
