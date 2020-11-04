@@ -16,6 +16,7 @@ services:
   web:
     build: .
     # image: docker.io/codereviewvideos/docker-phoenix
+    image: timemanagerelixirmehdi:latetst
     command: >
       bash -c "mix deps.get --force && mix ecto.create && mix ecto.migrate && mix phx.server"
     # bash -c "mix deps.get --force && mix ecto.create && yes | mix phx.gen.json Account User users username:string email:string password_hash:string role:string --force && yes | mix phx.gen.json Timer Clock clocks time:datetime status:boolean user:references:users --force && yes | mix phx.gen.json Timer WorkingTimes workingtimes start:datetime end:datetime user:references:users --force \
