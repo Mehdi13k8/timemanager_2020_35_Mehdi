@@ -3,6 +3,7 @@
     Test
     <h3>Line Chart <small>(with values modified every 10 seconds)</small></h3>
     <div v-if="lineData.length != 0">
+        <!-- label-colors='[ "#FF6384", "#36A2EB" ]' -->
       <line-chart
         id="line"
         :data="lineData"
@@ -10,7 +11,7 @@
         ykeys='[ "a", "b" ]'
         parseTime="false"
         resize="true"
-        labels='[ "Serie A", "Serie B" ]'
+        labels='[ "Ta journee", "Journee moyenne des employees" ]'
         line-colors='[ "#FF6384", "#36A2EB" ]'
         grid="true"
         grid-text-weight="bold"
@@ -103,7 +104,7 @@ export default {
   async mounted() {
     var userId = "";
     var jwt = "";
-    var data = JSON.stringify({ email: "foo2@bar.com", password: "Xdveg567" });
+    var data = JSON.stringify({ email: "foo@bar.com", password: "Xdveg567" });
     var config = {
       method: "post",
       url: this.ApiUrl + "users/sign_in",
@@ -445,11 +446,19 @@ export default {
           arr[3]["b"] = 0;
         if (arr[4]["b"] == undefined)
           arr[4]["b"] = 0;
-        MondayallHours > 0 ? arr[0]["b"] += MondayallHours: null ;
-        TuesdayallHours > 0 ? arr[1]["b"] += TuesdayallHours: null ;
-        WednesdayallHours > 0 ? arr[2]["b"] += WednesdayallHours: null ;
-        ThursdayallHours > 0 ? arr[3]["b"] += ThursdayallHours: null ;
-        FridayallHours > 0 ? arr[4]["b"] += FridayallHours: null ;
+        if (this.info_all.data.data.length > 1) {
+          MondayallHours > 0 ? arr[0]["b"] += MondayallHours: null ;
+          TuesdayallHours > 0 ? arr[1]["b"] += TuesdayallHours: null ;
+          WednesdayallHours > 0 ? arr[2]["b"] += WednesdayallHours: null ;
+          ThursdayallHours > 0 ? arr[3]["b"] += ThursdayallHours: null ;
+          FridayallHours > 0 ? arr[4]["b"] += FridayallHours: null ;
+          } else {
+          MondayallHours > 0 ? arr[0]["b"] = MondayallHours: null ;
+          TuesdayallHours > 0 ? arr[1]["b"] = TuesdayallHours: null ;
+          WednesdayallHours > 0 ? arr[2]["b"] = WednesdayallHours: null ;
+          ThursdayallHours > 0 ? arr[3]["b"] = ThursdayallHours: null ;
+          FridayallHours > 0 ? arr[4]["b"] = FridayallHours: null ;
+          }
         }
       }
       if (mondayBool === false) {
@@ -493,23 +502,24 @@ export default {
           arr[4]["b"] = 0;
       }
       // Bar Bleu pour la moyenne des gens le lundi
-      MondayallHours > 0 ? arr[0]["b"] += MondayallHours: null;
+      // MondayallHours > 0 ? arr[0]["b"] += MondayallHours: null;
+      // alert(arr[3]["b"]);
         if (arr[0]["b"] > 0)
           arr[0]["b"] /= MondayUserNb;
 
-      TuesdayallHours > 0 ? arr[1]["b"] += TuesdayallHours: null;
+      // TuesdayallHours > 0 ? arr[1]["b"] += TuesdayallHours: null;
         if (arr[1]["b"] > 0)
           arr[1]["b"] /= TuesdayUserNb;
 
-      WednesdayallHours > 0 ? arr[2]["b"] += ThursdayallHours: null;
+      // WednesdayallHours > 0 ? arr[2]["b"] += ThursdayallHours: null;
         if (arr[2]["b"] > 0)
           arr[2]["b"] /= WednesdayUserNb;
         // alert(WednesdayUserNb);
-      ThursdayallHours > 0 ? arr[3]["b"] += ThursdayallHours: null;
+      // ThursdayallHours > 0 ? arr[3]["b"] += ThursdayallHours: null;
         if (arr[3]["b"] > 0)
           arr[3]["b"] /= ThursdayUserNb;
 
-      FridayallHours > 0 ? arr[4]["b"] += FridayallHours: null;
+      // FridayallHours > 0 ? arr[4]["b"] += FridayallHours: null;
         if (arr[4]["b"] > 0)
           arr[4]["b"] /= FridayUserNb;
 
